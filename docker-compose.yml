@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    expose:
+      - 8000
+    env_file:
+      - ./backend/.env
+    command: gunicorn server.wsgi:application --bind 0.0.0.0:8000
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+
+    expose:
+      - 3000
+
+    command: serve -s build -l 3000
+    depends_on:
+      - backend
+
+  nginx:
+    restart: always
+    build: ./nginx
+    ports:
+      - 80:80
+    depends_on:
+      - frontend
