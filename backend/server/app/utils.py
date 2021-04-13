@@ -40,19 +40,26 @@ def data_clean_up(data):
 
 
 def getDailyEnergyConsumption():
+    stats = {}
 
-    meters = pd.DataFrame(Meter.objects.all().values())
-    energy = pd.DataFrame(EnergyConsumption.objects.all().values())
-    meters.rename(columns={'id': 'meter_id'}, inplace=True)
-    energy.rename(columns={'meter_id_id': 'meter_id'}, inplace=True)
-    energy['reading_date_time'] = pd.to_datetime(
-        energy['reading_date_time']).dt.date
-    merged_meters_energy = pd.merge(meters, energy, on="meter_id")
-    dates, daily_energy = merged_meters_energy[
-        "reading_date_time"].drop_duplicates(), merged_meters_energy[[
-            "reading_date_time", "consumption"]].groupby('reading_date_time').sum()
+    if EnergyConsumption.objects.all() and EnergyConsumption.objects.all():
+        meters = pd.DataFrame(Meter.objects.all().values())
+        energy = pd.DataFrame(EnergyConsumption.objects.all().values())
 
-    result = [{"date": date, "day": key + 1, "consumption": daily_energy.consumption[key]}
-              for key, date in enumerate(dates)]
+        meters.rename(columns={'id': 'meter_id'}, inplace=True)
+        energy.rename(columns={'meter_id_id': 'meter_id'}, inplace=True)
 
-    return result
+        energy['reading_date_time'] = pd.to_datetime(
+            energy['reading_date_time']).dt.date
+
+        merged_meters_energy = pd.merge(meters, energy, on="meter_id")
+        dates, daily_energy = merged_meters_energy[
+            "reading_date_time"].drop_duplicates(), merged_meters_energy[[
+                "reading_date_time", "consumption"]].groupby('reading_date_time').sum()
+
+        stats = {"data": [{"date": date, "day": key + 1, "consumption": daily_energy.consumption[key]}
+                 for key, date in enumerate(dates)], "message": "Statistics retrieved successfully"}
+    else:
+        stats = {"data": 0, "message": "No statistics"}
+
+    return stats

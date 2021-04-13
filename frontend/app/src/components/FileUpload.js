@@ -1,8 +1,9 @@
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import CloudUploadRounded from "@material-ui/icons/CloudUploadRounded";
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import FileStream from "../services/FileStream";
+import { LoaderContext } from "../app/App";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,37 +22,35 @@ const useStyles = makeStyles((theme) => ({
 
 export default function FileUpload(props) {
   const classes = useStyles();
-  const [loading, setLoading] = useState(false);
+  const { dispatch } = useContext(LoaderContext);
 
   const uploadFile = ({ target: { files } }) => {
-    setLoading(true);
-    //console.log(files[0]);
+    //send loading dispatch
+    dispatch({ type: "open", payload: { loading: true } });
+
     let data = new FormData();
     data.append("file", files[0]);
-
+    
+    //upload document
     FileStream("post", props.document, data).then((documentList) => {
       console.log(documentList.data);
-      setLoading(false);
+      dispatch({ type: "close", payload: { loading: false } });
     });
   };
 
-  if (loading) {
-    return <progress loading={loading} type="circular" />;
-  } else {
-    return (
-      <div className={classes.root}>
-        <Button variant="contained" component="label">
-          <CloudUploadRounded className={classes.extendedIcon} />
-          <input
-            type="file"
-            accept="text/csv"
-            formEncType="multipart/form-data"
-            hidden
-            onChange={uploadFile}
-          />
-          {props.document.replace("_", " ")}
-        </Button>
-      </div>
-    );
-  }
+  return (
+    <div className={classes.root}>
+      <Button variant="contained" component="label">
+        <CloudUploadRounded className={classes.extendedIcon} />
+        <input
+          type="file"
+          accept="text/csv"
+          formEncType="multipart/form-data"
+          hidden
+          onChange={uploadFile}
+        />
+        {props.document.replace("_", " ")}
+      </Button>
+    </div>
+  );
 }

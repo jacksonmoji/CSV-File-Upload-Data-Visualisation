@@ -42,7 +42,11 @@ function App() {
           path="/"
           render={() => (
             <Fragment>
-              <Buildings />
+              {!state.loading ? (
+                <Buildings />
+              ) : (
+                <Loader loading={state.loading} type="circle" />
+              )}
             </Fragment>
           )}
         />
@@ -51,7 +55,11 @@ function App() {
           path="/energy_consumption"
           render={() => (
             <Fragment>
-              <Statistics />
+              {!state.loading ? (
+                <Statistics />
+              ) : (
+                <Loader loading={state.loading} type="circle" />
+              )}
             </Fragment>
           )}
         />

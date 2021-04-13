@@ -24,8 +24,7 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requir
 # pull official base image
 FROM python:3.8-slim
 
-# installing netcat (nc) since we are using that to listen to postgres server in entrypoint.sh
-RUN apt-get update && apt-get install -y --no-install-recommends netcat && \
+RUN apt-get update && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*

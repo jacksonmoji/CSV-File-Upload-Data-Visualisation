@@ -12,12 +12,14 @@ import {
   TableRow,
   Typography,
   Paper,
+  Grid,
 } from "@material-ui/core";
 
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
 import FileStream from "../../services/FileStream";
 import Progress from "../../components/Loader";
+import FileUpload from "../../components/FileUpload";
 
 const useRowStyles = makeStyles({
   root: {
@@ -26,6 +28,10 @@ const useRowStyles = makeStyles({
     },
   },
 });
+
+const useUploadStyles = makeStyles((theme) => ({
+  uploadButtons: { marginTop: 150 },
+}));
 
 function Row(props) {
   const { row } = props;
@@ -62,15 +68,24 @@ function Row(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.meters.map((metersRow, index) => (
-                    <TableRow key={`letter-${index}`}>
-                      <TableCell>{metersRow.id}</TableCell>
-                      <TableCell component="th" scope="row">
-                        {metersRow.fuel}
+                  {row.meters.length > 0 ? (
+                    row.meters.map((metersRow, index) => (
+                      <TableRow key={`letter-${index}`}>
+                        <TableCell>{metersRow.id}</TableCell>
+                        <TableCell component="th" scope="row">
+                          {metersRow.fuel}
+                        </TableCell>
+                        <TableCell>{metersRow.unit}</TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell> No Meter Entries </TableCell>
+                      <TableCell>
+                        <FileUpload document="meters" />
                       </TableCell>
-                      <TableCell>{metersRow.unit}</TableCell>
                     </TableRow>
-                  ))}
+                  )}
                 </TableBody>
               </Table>
             </Box>
@@ -83,24 +98,55 @@ function Row(props) {
 
 export default function Buildings() {
   const [list, setList] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState({});
+
+  const classes = useUploadStyles();
 
   useEffect(() => {
+    //send loading status
+    setStatus({
+      loading: true,
+      message: "fetching data...",
+    });
+
+    //get remote buildings data
     getBuildingsList();
   }, []);
 
-  const getBuildingsList = () => {
-    FileStream("get", "buildings").then((buildingsList) => {
+  const getBuildingsList = async () => {
+    await FileStream("get", "buildings").then((buildingsList) => {
       setList(buildingsList.data);
-      setLoading(false);
+    });
+    //send loading dispatch
+    await setStatus({
+      loading: false,
+      message: "fetch data done",
     });
   };
 
-  if (loading) {
-    return <Progress loading={loading} type="linear" />;
+  if (status.loading && list.length < 1) {
+    return <Progress loading={status.loading} type="linear" />;
+  }
+  if (!status.loading && list.length < 1) {
+    return (
+      <Grid
+        container
+        direction="column"
+        alignItems="center"
+        className={classes.uploadButtons}
+      >
+        <Grid item xs={8}>
+          {"No Building Data"}
+        </Grid>
+        <Grid item xs={8}>
+          <FileUpload document="buildings" />
+        </Grid>
+      </Grid>
+    );
   } else {
     return (
       <React.Fragment>
+        {console.log(list)}
         <TableContainer component={Paper}>
           <Table aria-label="collapsible table">
             <TableHead>

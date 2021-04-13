@@ -1,6 +1,7 @@
 import { API_SERVER, POST, GET, API_VERSION } from "../settings";
 const axios = require("axios").default;
 
+//generic file stream function for any document type
 const fileStream = async (request_type, file_type, data) => {
   let response;
   const url = API_SERVER + API_VERSION + file_type;

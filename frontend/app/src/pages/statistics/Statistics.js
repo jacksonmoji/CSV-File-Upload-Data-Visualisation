@@ -11,30 +11,66 @@ import {
 import { ValueScale, Animation } from "@devexpress/dx-react-chart";
 import FileStream from "../../services/FileStream";
 import Progress from "../../components/Loader";
+import { Grid, makeStyles } from "@material-ui/core";
+import FileUpload from "../../components/FileUpload";
+
+const useUploadStyles = makeStyles((theme) => ({
+  uploadButtons: { marginTop: 150 },
+}));
 
 export default function Statistics() {
+  const classes = useUploadStyles();
   const [list, setList] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState({});
 
   useEffect(() => {
-    getData();
+    //send loading status
+    setStatus({
+      loading: true,
+      message: "fetching data...",
+    });
+
+    getStatistics();
   }, []);
 
-  const getData = () => {
-    FileStream("get", "energy_consumptions_stats").then(
+  const getStatistics = async () => {
+    //get remote stats data
+    await FileStream("get", "energy_consumptions_stats").then(
       (energy_consumptions_stats) => {
         setList(energy_consumptions_stats.data);
-        setLoading(false);
       }
     );
+    //send loading status
+    await setStatus({
+      loading: false,
+      message: "fetch data done",
+    });
   };
 
-  if (loading) {
-    return <Progress loading={loading} type="linear" />;
+  if (status.loading && !list.data) {
+    return <Progress loading={status.loading} type="linear" />;
+  }
+  if (!list.data && !status.loading) {
+    return (
+      <Grid
+        container
+        direction="column"
+        alignItems="center"
+        className={classes.uploadButtons}
+      >
+        <Grid item xs={8}>
+          {list.message}
+        </Grid>
+        <Grid item xs={8}>
+          <FileUpload document="energy_consumptions" />
+        </Grid>
+      </Grid>
+    );
   } else {
+    console.log(list.data);
     return (
       <Paper>
-        <Chart data={list}>
+        <Chart data={list.data}>
           <ValueScale name="consumption" />
           <ArgumentAxis />
           <ValueAxis

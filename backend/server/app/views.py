@@ -67,8 +67,13 @@ class MeterList(generics.ListCreateAPIView):
 
 @api_view(['GET'])
 def energy_consumption_list(request):
-
+    print("introduction.....")
     if request.method == 'GET':
-        energy_consumption_stats = getDailyEnergyConsumption()
-
-        return Response(energy_consumption_stats)
+        try:
+            print("we in the try catch.....")
+            result = getDailyEnergyConsumption()
+            print("weare here")
+            return Response(result, status=200)
+        except Exception as e:
+            print(e.error)
+            return Response(e.error, status=500)

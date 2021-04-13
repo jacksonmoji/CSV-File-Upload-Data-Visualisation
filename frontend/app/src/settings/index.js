@@ -1,4 +1,4 @@
-const API_SERVER = `http://127.0.0.1:8000`;
+const API_SERVER = `http://127.0.0.1`; //remove the port when deploying to docker
 const LEVEL = `/`;
 const POST = `post`;
 const GET = `get`;
