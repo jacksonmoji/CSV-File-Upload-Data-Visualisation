@@ -2,7 +2,7 @@
 Workfinder Test
 ======
 
-## Running App via Docker
+## Running App
 
 Setup dev instance manually, running the following commands:
 
@@ -19,7 +19,9 @@ Set up frontend:
 2. `npm i` - run npm install to install all frontend project dependencies
 3. `npm start` - run frontend development client
 
+## Running App via Docker
+
 or just run one command
 
-2. `docker-compose up --build -d` - starts dev server
-3. `http://localhost` - go to url provided ( MAKE SURE TO VISIT `frontend/app/src/settings/index.js` for make necessary adjustment to run without the port provision from browser)
+1. `docker-compose up --build -d` - starts dev server
+2. `http://localhost` - go to url provided ( MAKE SURE TO VISIT `frontend/app/src/settings/index.js` for make necessary adjustment to run without the port provision from browser)
