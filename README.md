@@ -22,7 +22,9 @@ Set up frontend:
 
 ## Running App via Docker
 
+Side note, I am still working on a bug from the docker deployment side -- uploading large files is still an issue i am trying to fix.
+
 or just run one command
 
 1. `docker-compose up --build -d` - starts dev server
-2. `http://localhost` - go to url provided ( MAKE SURE TO VISIT `frontend/app/src/settings/index.js` for make necessary adjustment to run without the port provision from browser)
+2. `http://localhost` - go to url provided ( MAKE SURE TO VISIT `frontend/app/src/settings/index.js` to make the necessary adjustment to run without the port provision from browser)
