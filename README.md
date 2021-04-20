@@ -3,7 +3,7 @@
 Hi! I'm working on chunking large CSV file uploads and implementing drag and drop functionality. I am using data sample from UK hotel building energy consumption.  
 
 
-# TechStack 🛠
+## TechStack 🛠
 - ReactJs
 - Material UI
 - Django
