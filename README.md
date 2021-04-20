@@ -1,29 +1,59 @@
+# Welcome to CSV File Upload
 
-CSV-File-Upload-Data-Visualisation
-===================================
+Hi! I'm working on chunking large CSV file uploads and implementing drag and drop functionality for file uploading. 
+
+
+# TechStack 🛠
+- ReactJs
+- Material UI
+- Django
+- PostgreSQL
+- Celery
+- Docker
+- Gunicorn
+
 
 ## Running App
 
-Setup dev instance manually, running the following commands:
+Setup project manually by running the following commands:
 
 Set up backend:
 
-1. `pip install -r requirements.txt ` - run this command to install all backend project dependencies
-2. `python manage.py makemigrations` - run migrations
-3. `python manage.py migrate` - run migrations
-4. `python manage.py runserver` - run server
+ 1. Install all backend project dependencies
+	 >`pip install -r requirements.txt ` 
+ 
+2.  Run migrations
+	 >`python manage.py makemigrations`
+	 >` python manage.py migrate`
+	 
+3.  Start server
+	>`python manage.py runserver` - 
 
 Set up frontend:
+1. Change directory to /app directory
+	> `cd frontend/app/` 
+	
+2. Run npm install to install all frontend project dependencies
+	> `npm i` 
+	
+3. run frontend development client
+	>`npm start` 
 
-1. `cd frontend/app/` - change directory to /app directory
-2. `npm i` - run npm install to install all frontend project dependencies
-3. `npm start` - run frontend development client
+
+NB: **or you could just run one command with docker  😎**
 
 ## Running App via Docker
 
-Side note, I am still working on a bug from the docker deployment side -- uploading large files is still an issue i am trying to fix.
+> Side note, I am still working on a bug from the docker deployment side -- uploading large files is still an issue i am trying to fix.
 
-or just run one command
 
-1. `docker-compose up --build -d` - starts dev server
-2. `http://localhost` - go to url provided ( MAKE SURE TO VISIT `frontend/app/src/settings/index.js` to make the necessary adjustment to run without the port provision from browser)
+ 1. Builds and starts dev server container detached
+	> `docker-compose up --build -d`
+
+2. Go to url
+	>`http://localhost`  
+
+
+	> make sure to visit **frontend/app/src/settings/index.js** to make the necessary adjustment to run without the port provision from browser
+
+
