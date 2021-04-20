@@ -1,6 +1,6 @@
 # Welcome to CSV File Upload
 
-Hi! I'm working on chunking large CSV file uploads and implementing drag and drop functionality for file uploading. 
+Hi! I'm working on chunking large CSV file uploads and implementing drag and drop functionality. I am using data sample from UK hotel building energy consumption.  
 
 
 # TechStack 🛠
