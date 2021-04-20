@@ -10,7 +10,7 @@ Hi! I'm working on chunking large CSV file uploads and implementing drag and dro
 - PostgreSQL
 - Celery
 - Docker
-- Gunicorn
+- Nginx
 
 
 ## Running App
